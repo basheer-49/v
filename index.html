@@ -187,6 +187,7 @@ section{position:relative;padding:14vh 6vw;}
   border:2px solid var(--ink);position:relative;
 }
 .vid-frame iframe{width:100%;height:100%;border:0;pointer-events:none;}
+.vid-frame video{width:100%;height:100%;object-fit:cover;display:block;background:#111;}
 .vid-card.is-active .vid-frame iframe{pointer-events:auto;}
 .vid-card .play-hint{
   position:absolute;top:-16px;left:50%;transform:translateX(-50%) rotate(-3deg);
@@ -368,7 +369,7 @@ footer .deco{position:absolute;color:rgba(0,255,133,.12);font-size:140px;font-we
   <div class="vid-stage" id="vidStage"></div>
   <div class="vid-nav">
     <button class="vid-btn" id="vidPrev" aria-label="السابق">❮</button>
-    <span class="vid-count" id="vidCount">01 / 09</span>
+    <span class="vid-count" id="vidCount">01 / 11</span>
     <button class="vid-btn" id="vidNext" aria-label="التالي">❯</button>
   </div>
 </section>
@@ -451,7 +452,7 @@ const mq=document.getElementById('mq');
 const phrase='<b>VISIBLE LINE MEDIA</b> <span class="pu">✦</span> صناعة الإبداع <span class="pu">✦</span> <b>DESIGN</b> <span class="pu">✦</span> فيديو <span class="pu">✦</span> هوية بصرية ✦ <b>MOTION</b> <span class="pu">✦</span> تسويق رقمي <span class="pu">✦</span> ';
 mq.innerHTML=phrase.repeat(6);
 
-const vids=["1xVdz_m4V2Hg_YOJxNlspctOyQq9Lgx_a", "1cxzSirdwrtOXaBmgde9yMRQhlD6Ve7SR", "1zzlkf12EobknG_kvo8QFE1sS17MyhuUc", "1LiHq-tGAXt6wRcvrPCHjU2WmJjNgT-0K", "1q5XR1Vr1c40jm85P61Gs3GCyjuhqFWkI", "1ryDvcNNNnFIhHYrk3T3BalPdryepP2Ty", "1fJqmDS7OdHcPhBUd1aVPTzOQsxWMiCYF", "13xq6AZpdoBA_B9W4x9dlSmx8wZtkV8EQ", "1Fne_LR8xN7BvSOgF4rwUeLlp6pTZHCJ0"];
+const vids=["https://visibleline.net/video/rosan1.mp4", "https://visibleline.net/video/rosan2.mp4", "https://visibleline.net/video/rosan3.mp4", "https://visibleline.net/video/rosan4.mp4", "https://visibleline.net/video/linova.mp4", "https://visibleline.net/video/brothersmobile2.mp4", "https://visibleline.net/video/brothersmobile1.mp4", "https://visibleline.net/video/brothersmobile3.mp4", "https://visibleline.net/video/grafity1.mp4", "https://visibleline.net/video/grafity2.mp4", "https://visibleline.net/video/grafity3.mp4"];
 const stageEl=document.getElementById('vidStage');
 const vidCountEl=document.getElementById('vidCount');
 let vCurrent=0;
@@ -460,13 +461,17 @@ vids.forEach(function(id,i){
   slot.className='vid-slot off';
   slot.dataset.i=i;
   slot.innerHTML='<div class="vid-card">'+
-    '<span class="play-hint">▶ اضغط للتشغيل</span>'+
+    '<span class="play-hint">🔊 اضغط للصوت</span>'+
     '<span class="now-badge">● يُعرض الآن</span>'+
-    '<div class="vid-frame"><iframe data-src="https://drive.google.com/file/d/'+id+'/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>'+
+    '<div class="vid-frame"><video src="'+id+'" playsinline preload="metadata" loop></video></div>'+
     '<span class="vnum">VIDEO '+String(i+1).padStart(2,'0')+'</span></div>';
   slot.addEventListener('click',function(){
     const rel=((i-vCurrent)%vids.length+vids.length)%vids.length;
-    if(rel===1||rel===vids.length-1){vCurrent=i;renderVids();}
+    const vid=slot.querySelector('video');
+    if(rel===0){
+      vid.muted=!vid.muted;
+      slot.querySelector('.play-hint').textContent=vid.muted?'🔊 اضغط للصوت':'🔇 اضغط لكتم الصوت';
+    }else if(rel===1||rel===vids.length-1){vCurrent=i;renderVids();}
   });
   stageEl.appendChild(slot);
 });
@@ -480,14 +485,21 @@ function renderVids(){
     if(rel>n/2)rel-=n;
     const abs=Math.abs(rel);
     const card=slot.querySelector('.vid-card');
-    const frame=slot.querySelector('iframe');
+    const vid=slot.querySelector('video');
     if(abs<=2){
       slot.className='vid-slot '+(rel===0?'p0':rel===1?'p1r':rel===-1?'p1l':rel===2?'p2r':'p2l');
-      if(!frame.src)frame.src=frame.dataset.src;
       card.classList.toggle('is-active',rel===0);
+      if(rel===0){
+        vid.muted=true;
+        vid.play().catch(function(){});
+        slot.querySelector('.play-hint').textContent='🔊 اضغط للصوت';
+      }else{
+        vid.pause();
+      }
     }else{
       slot.className='vid-slot off';
       card.classList.remove('is-active');
+      vid.pause();
     }
   }
   vidCountEl.textContent=String(vCurrent+1).padStart(2,'0')+' / '+String(n).padStart(2,'0');
