@@ -9,15 +9,22 @@
 <style>
 :root{
   --accent:#00ff85;
+  --purple:#9900ff;
   --ink:#0a0a0a;
   --paper:#fdfdfa;
   --grid-line:rgba(10,10,10,.07);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
+html,body{overflow-x:hidden;}
 body{
   font-family:'Cairo',sans-serif;
   color:var(--ink);
+  background:#e8e8e2;
+}
+img{max-width:100%;height:auto;}
+.paper{
+  max-width:1200px;margin:0 auto;min-height:100vh;position:relative;
   background-color:var(--paper);
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
@@ -25,7 +32,8 @@ body{
     linear-gradient(rgba(0,255,133,.10) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,255,133,.10) 1px, transparent 1px);
   background-size:28px 28px, 28px 28px, 140px 140px, 140px 140px;
-  overflow-x:hidden;
+  border-right:2px solid var(--ink);border-left:2px solid var(--ink);
+  box-shadow:0 0 70px rgba(10,10,10,.10);
 }
 ::selection{background:var(--accent);color:#000;}
 
@@ -37,7 +45,7 @@ body{
 }
 
 nav{
-  position:fixed;top:0;right:0;left:0;z-index:50;
+  position:sticky;top:0;z-index:50;
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 5vw;
   background:rgba(253,253,250,.75);backdrop-filter:blur(12px);
@@ -49,7 +57,7 @@ nav{
 .eye{
   width:34px;height:22px;border:3px solid var(--ink);border-radius:50%;
   position:relative;display:flex;align-items:center;justify-content:center;
-  background:var(--accent);
+  background:linear-gradient(120deg,var(--accent),var(--purple));
 }
 .eye::after{content:'';width:8px;height:8px;background:var(--ink);border-radius:50%;animation:pupil 3s ease-in-out infinite alternate;}
 @keyframes pupil{from{transform:translateX(-5px);}to{transform:translateX(5px);}}
@@ -80,7 +88,7 @@ nav a:hover::after{width:100%;}
 .logo-big .v{position:relative;display:inline-block;}
 .logo-big .v::after{
   content:'';position:absolute;left:-4px;right:-4px;bottom:4px;height:38%;
-  background:var(--accent);z-index:-1;transform:skewX(-12deg);
+  background:linear-gradient(90deg,var(--accent),var(--purple));z-index:-1;transform:skewX(-12deg);
 }
 .hero-sub{
   margin-top:22px;direction:ltr;font-family:'Space Grotesk',sans-serif;
@@ -113,8 +121,9 @@ nav a:hover::after{width:100%;}
 .marquee{
   border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);
   background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;
-  padding:12px 0;transform:rotate(-1.2deg);width:104vw;margin-right:-2vw;
+  padding:12px 0;transform:rotate(-1.2deg);width:100%;
 }
+.marquee-inner .pu{color:var(--purple);}
 .marquee-inner{display:inline-block;animation:slide 22s linear infinite;direction:ltr;}
 .marquee-inner b{color:var(--accent);margin:0 18px;font-family:'Space Grotesk',sans-serif;letter-spacing:.15em;}
 @keyframes slide{from{transform:translateX(0);}to{transform:translateX(-50%);}}
@@ -256,12 +265,47 @@ footer .cta{
 footer .cta:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 #fff;}
 footer .tiny{margin-top:40px;font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.15em;direction:ltr;font-family:'Space Grotesk',sans-serif;}
 footer .deco{position:absolute;color:rgba(0,255,133,.12);font-size:140px;font-weight:900;line-height:1;user-select:none;pointer-events:none;direction:ltr;font-family:'Space Grotesk',sans-serif;}
+.intro .hl2{background:var(--purple);color:#fff;padding:0 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:900;}
+.author-tag{box-shadow:6px 6px 0 var(--purple);}
+.vid-count{border:2px solid var(--purple);}
+.dg:nth-of-type(even)::before{background:linear-gradient(transparent 62%, rgba(153,0,255,.12) 62%);}
+.dg:nth-of-type(even) .idx{background:var(--purple);color:#fff;}
+.brand-card:nth-of-type(even):hover{filter:drop-shadow(0 18px 24px rgba(153,0,255,.40));}
+.marquee b.pu{color:var(--purple);}
+
+/* ---------- mobile tuning ---------- */
+@media (max-width:640px){
+  section{padding:10vh 5vw;}
+  .hero-sub{letter-spacing:.28em;font-size:10px;}
+  .sticker{display:none;}
+  .intro p{font-size:16.5px;line-height:1.95;}
+  .sec-title{font-size:26px;}
+  .dg{padding:4vh 5vw;margin-top:7vh;border-radius:16px;}
+  .dg-head h3{font-size:20px;}
+  .dg-item{width:min(200px,58vw);}
+  .dg-row{gap:12px;}
+  .vid-stage{height:460px;}
+  .vid-frame{width:150px;}
+  .vid-slot.p1r{transform:translate(-50%,-50%) translateX(min(175px,32vw)) translateY(8px) scale(.82) rotate(4deg);}
+  .vid-slot.p1l{transform:translate(-50%,-50%) translateX(max(-175px,-32vw)) translateY(8px) scale(.82) rotate(-4deg);}
+  .vid-slot.p2r{transform:translate(-50%,-50%) translateX(min(290px,52vw)) translateY(18px) scale(.52) rotate(8deg);}
+  .vid-slot.p2l{transform:translate(-50%,-50%) translateX(max(-290px,-52vw)) translateY(18px) scale(.52) rotate(-8deg);}
+  .vid-btn{width:46px;height:46px;font-size:18px;}
+  nav{padding:10px 4vw;}
+  .logo-mark{font-size:15px;}
+  nav a{font-size:11.5px;margin-inline-start:11px;}
+  footer .cta{padding:14px 30px;font-size:15px;}
+  .author-tag{font-size:13px;padding:10px 18px;}
+  footer .deco{font-size:90px;}
+}
 </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
 <div class="blob" id="blob"></div>
 
+<div class="paper">
 <nav>
   <div class="logo-mark"><span class="eye"></span><span>VISIBLE&nbsp;LINE</span></div>
   <div>
@@ -276,7 +320,7 @@ footer .deco{position:absolute;color:rgba(0,255,133,.12);font-size:140px;font-we
   <div class="halo"></div>
   <div class="sticker" style="top:16%;right:8%;">✦ معرض أعمال 2026</div>
   <div class="sticker" style="bottom:22%;left:7%;animation-delay:1.2s;transform:rotate(5deg);">صُنع بحـب ♥</div>
-  <div class="sticker" style="top:30%;left:12%;animation-delay:.6s;transform:rotate(-9deg);background:var(--accent);color:#000;box-shadow:5px 5px 0 var(--ink);">VL Media</div>
+  <div class="sticker" style="top:30%;left:12%;animation-delay:.6s;transform:rotate(-9deg);background:var(--purple);color:#fff;box-shadow:5px 5px 0 var(--accent);">VL Media</div>
   <h1 class="logo-big"><span class="v">VISIBLE</span> LINE</h1>
   <div class="hero-sub" id="heroSub">VISIBLE LINE MEDIA AGENCY PORTFOLIO</div>
   <div class="scroll-cue"><div class="mouse"></div><span>مرّر للأسفل</span></div>
@@ -290,7 +334,7 @@ footer .deco{position:absolute;color:rgba(0,255,133,.12);font-size:140px;font-we
   <div class="sec-label rv">01 — Welcome</div>
   <p class="rv" style="--d:.1s">
     عند الدخول إلى معرض أعمال <span class="hl">Visible Line Media</span> عليك أن تكون بحالة
-    <span class="hl">روقان شديد جداً</span>، فلم نتعب بتصميم معرض الأعمال حتى تمرّ عليه بهذه السرعة —
+    <span class="hl2">روقان شديد جداً</span>، فلم نتعب بتصميم معرض الأعمال حتى تمرّ عليه بهذه السرعة —
     صُنع معرض الأعمال هذا بكل <span class="big-love">حــــــــــــــــــــــــــــــــــــــــب</span>،
     وصُنعت جميع الأعمال فيه بحبٍّ أكبر، حتى يحصل عملنا على محبتكم ونصل معاً إلى
     <span class="hl">نقطة نجاح مبهرة</span>.
@@ -394,6 +438,7 @@ footer .deco{position:absolute;color:rgba(0,255,133,.12);font-size:140px;font-we
   <a class="cta rv" href="https://wa.me/962781144716?text=%D9%84%D9%82%D8%AF%20%D8%A7%D8%AA%D9%8A%D8%AA%20%D9%85%D9%86%20%D9%85%D9%84%D9%81%20%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84%20%D8%A7%D9%84%D8%AE%D8%A7%D8%B5%20%D8%A8%D9%83%D9%85%20%D9%85%D9%86%20%D9%81%D8%B6%D9%84%D9%83%20%D9%87%D9%84%20%D9%8A%D9%85%D9%83%D9%86%D9%86%D9%8A%20%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D9%88%20%D8%AA%D8%AD%D8%AF%D9%8A%D8%AF%20%D9%85%D9%88%D8%B9%D8%AF%20%D8%A5%D8%AC%D8%AA%D9%85%D8%A7%D8%B9%20%D9%84%D9%86%D8%AA%D8%B9%D8%A7%D9%88%D9%86%20%D9%85%D8%B9%D8%A7%20%D9%8B%D8%9F" target="_blank" rel="noopener">✦ ابدأ مشروعك الآن</a>
   <div class="tiny rv">VISIBLE LINE MEDIA AGENCY © 2026 — ALL RIGHTS RESERVED</div>
 </footer>
+</div>
 
 <script>
 const blob=document.getElementById('blob');
@@ -403,7 +448,7 @@ const sub=document.getElementById('heroSub');
 sub.innerHTML=[...sub.textContent].map(function(c,i){return '<span style="animation-delay:'+(0.15+i*0.045)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');
 
 const mq=document.getElementById('mq');
-const phrase='<b>VISIBLE LINE MEDIA</b> ✦ صناعة الإبداع ✦ <b>DESIGN</b> ✦ فيديو ✦ هوية بصرية ✦ <b>MOTION</b> ✦ تسويق رقمي ✦ ';
+const phrase='<b>VISIBLE LINE MEDIA</b> <span class="pu">✦</span> صناعة الإبداع <span class="pu">✦</span> <b>DESIGN</b> <span class="pu">✦</span> فيديو <span class="pu">✦</span> هوية بصرية ✦ <b>MOTION</b> <span class="pu">✦</span> تسويق رقمي <span class="pu">✦</span> ';
 mq.innerHTML=phrase.repeat(6);
 
 const vids=["1xVdz_m4V2Hg_YOJxNlspctOyQq9Lgx_a", "1cxzSirdwrtOXaBmgde9yMRQhlD6Ve7SR", "1zzlkf12EobknG_kvo8QFE1sS17MyhuUc", "1LiHq-tGAXt6wRcvrPCHjU2WmJjNgT-0K", "1q5XR1Vr1c40jm85P61Gs3GCyjuhqFWkI", "1ryDvcNNNnFIhHYrk3T3BalPdryepP2Ty", "1fJqmDS7OdHcPhBUd1aVPTzOQsxWMiCYF", "13xq6AZpdoBA_B9W4x9dlSmx8wZtkV8EQ", "1Fne_LR8xN7BvSOgF4rwUeLlp6pTZHCJ0"];
